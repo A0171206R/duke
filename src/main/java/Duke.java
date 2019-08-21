@@ -1,6 +1,8 @@
 import java.util.Scanner;
+import java.lang.String;
 
 public class Duke {
+
 
     public Duke(){
         String logo = " ____        _        \n"
@@ -24,16 +26,37 @@ public class Duke {
         printPartition();
     }
 
+
+    static void printHistory(String[] history, int index) {
+        for(int i = 0; i < index; i++){
+            System.out.println(i+1 + ". " + history[i] + "\n");
+        }
+    }
+
     public static void main(String[] args) {
         Duke d = new Duke();
+        String[] history = new String[100];
+        int index = 0;
+        String input;
+
         Scanner s = new Scanner(System.in);
-        String input = s.nextLine();
+        input = s.nextLine();
 
         while(!(input.equals("bye"))) {
-            printPartition();
-            System.out.println(input);
-            printPartition();
-            input = s.nextLine();
+            if(!(input.equals("list"))) {
+                printPartition();
+                System.out.println("added: " + input + "\n");
+                printPartition();
+                history[index] = input;
+                index++;
+                input = s.nextLine();
+            }
+            else {
+                printPartition();
+                printHistory(history, index);
+                printPartition();
+                input = s.nextLine();
+            }
         }
         d.functionBye();
     }
