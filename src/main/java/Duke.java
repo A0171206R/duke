@@ -36,7 +36,7 @@ public class Duke {
         printPartition();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws DukeException {
         Duke d = new Duke();
 
         ArrayList<Task> taskList = new ArrayList<Task>();
@@ -51,10 +51,14 @@ public class Duke {
             Task t = new Task(description);
 
             input = s.nextLine();
-            if(input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0) {
-                String[] token = input.split(" ", 2);
-                command = token[0];
-                after_command = token[1];
+            if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0) {
+                try {
+                    String[] token = input.split(" ", 2);
+                    command = token[0];
+                    after_command = token[1];
+                }catch(Exception e){
+                    throw new DukeException(" ☹ OOPS!!! The description of a " + input + " cannot be empty.");
+                }
             }
             else{
                 command = input;
@@ -108,7 +112,7 @@ public class Duke {
                 case "bye":
                     d.functionBye();
                 default:
-                    break;
+                    throw new DukeException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
             }
 
         }
@@ -178,5 +182,11 @@ class Task{
         public String toString() {
             return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
         }
+    }
+}
+
+class DukeException extends Exception{
+    public DukeException(String errorMessage){
+        super(errorMessage);
     }
 }
