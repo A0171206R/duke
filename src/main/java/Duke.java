@@ -1,6 +1,11 @@
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.String;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
 
 public class Duke {
 
@@ -27,6 +32,11 @@ public class Duke {
         System.exit(1);
     }
 
+    public void debug(String[] temp){
+        for(int i = 0; i < temp.length; i++){
+            System.out.println(temp[i]);
+        }
+    }
 
     static void printTaskList(ArrayList<Task> taskList) {
         printPartition();
@@ -36,13 +46,62 @@ public class Duke {
         printPartition();
     }
 
-    public static void main(String[] args) throws DukeException {
+    public static void main(String[] args) throws DukeException, IOException {
         Duke d = new Duke();
-
         ArrayList<Task> taskList = new ArrayList<Task>();
         String input;
 
+        String filepath = "C:\\duke.txt";
+        File file = new File(filepath);
+        FileReader fr = new FileReader(file);
+        BufferedReader reader;
         Scanner s = new Scanner(System.in);
+
+        /*Read file here and insert task objects into taskList first*/
+        try{
+            reader = new BufferedReader(fr);
+            String line = reader.readLine();
+            while(line != null){
+                Task tSave = new Task(null);
+                //System.out.println(line);
+                String[] fileInputLine = line.split(" | ", 2);
+                if(fileInputLine[0].equals("T")) {
+                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 4);
+                    tSave =  new Task.Todo(fileInputLineMore[3]);
+                    if(fileInputLineMore[1].equals("1")){
+                        tSave.getItDone();
+                    }
+                    taskList.add(tSave);
+                }
+                else if(fileInputLine[0].equals("D")){
+                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
+                    tSave =  new Task.Deadline(fileInputLineMore[3], fileInputLineMore[4]);
+                    tSave.toString();
+                    if(fileInputLineMore[1].equals("1")){
+                        tSave.getItDone();
+                    }
+                    taskList.add(tSave);
+
+                }
+                else if(fileInputLine[0].equals("E")){
+                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
+                    System.out.println(fileInputLineMore[5]);
+                    tSave =  new Task.Event(fileInputLineMore[3], fileInputLineMore[4]);
+                    tSave.toString();
+                    if(fileInputLineMore[1].equals("1")){
+                        tSave.getItDone();
+                    }
+                    taskList.add(tSave);
+
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+        }catch(Exception e){
+            throw e;
+            //throw new DukeException("File that is trying to be read does not exist! >:( ");
+        }
+        /**************************************END OF FILE READ******************************************/
 
         while(true) {
 
@@ -51,6 +110,7 @@ public class Duke {
             Task t = new Task(description);
 
             input = s.nextLine();
+
             if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0) {
                 try {
                     String[] token = input.split(" ", 2);
@@ -110,11 +170,42 @@ public class Duke {
                     printPartition();
                     break;
                 case "bye":
+                    //write everything in taskList to file now
+                    FileWriter fw = new FileWriter(file);
+                    for(int i = 0; i < taskList.size(); i++){
+                        char second_param = (taskList.get(i).isDone) ? '1' : '0';
+                        char first_param = taskList.get(i).getTag();
+                        String temp;
+                        String third_param = null, fourth_param = null;
+                        if(first_param == 'T'){
+                            fw.write(first_param + " | " + second_param + " | " + taskList.get(i).description + "\r\n");
+                            fw.flush();
+                        }
+                        else if(first_param == 'D'){
+                            temp = taskList.get(i).description.replaceAll("\\p{P}", "");
+                            System.out.println(temp);
+                            third_param = temp.split("by", 2 )[0];
+                            fourth_param = temp.split("by", 2)[1];
+                            System.out.println(third_param);
+                            System.out.println(fourth_param);
+                            fw.write(first_param + " | " + second_param + " | " + third_param + "|" + fourth_param + "\r\n");
+                            fw.flush();
+                        }
+                        else if(first_param == 'E'){
+                            temp = taskList.get(i).description.replaceAll("\\p{P}", "");
+                            System.out.println(temp);
+                            third_param = temp.split("at ", 2 )[0];
+                            fourth_param = temp.split("at ", 2)[1];
+                            System.out.println(third_param);
+                            System.out.println(fourth_param);
+                            fw.write(first_param + " | " + second_param + " | " + third_param + "|" + fourth_param + "\r\n");
+                            fw.flush();
+                        }
+                    }
                     d.functionBye();
                 default:
                     throw new DukeException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
             }
-
         }
     }
 }
@@ -150,7 +241,7 @@ class Task{
 
         @Override
         public String toString() {
-            super.description = super.description + " (at: " + at + ")";
+            super.description = super.description + "(at:" + at + ")";
             return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
         }
     }
@@ -167,7 +258,7 @@ class Task{
 
         @Override
         public String toString() {
-            super.description = super.description + " (by: " + by + ")";
+            super.description = super.description + "(by:" + by + ")";
             return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
         }
     }
