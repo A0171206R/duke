@@ -184,22 +184,18 @@ public class Duke {
                         }
                         else if(first_param == 'D'){
                             temp = taskList.get(i).description.replaceAll("\\p{P}", "");
-                            System.out.println(temp);
                             third_param = temp.split("by", 2 )[0];
                             fourth_param = temp.split("by", 2)[1];
-                            System.out.println(third_param);
-                            fourth_param.replaceAll(" ", "");
-                            System.out.println(fourth_param);
+                            //fourth_param.replaceAll(" ", "");
+
                             fw.write(first_param + " | " + second_param + " | " + third_param + "|" + fourth_param + "\r\n");
                             fw.flush();
                         }
                         else if(first_param == 'E'){
                             temp = taskList.get(i).description.replaceAll("\\p{P}", "");
-                            System.out.println(temp);
                             third_param = temp.split("at ", 2 )[0];
                             fourth_param = temp.split("at ", 2)[1];
-                            System.out.println(third_param);
-                            System.out.println(fourth_param);
+
                             fw.write(first_param + " | " + second_param + " | " + third_param + "| " + fourth_param + "\r\n");
                             fw.flush();
                         }
