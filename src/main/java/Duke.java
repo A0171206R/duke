@@ -75,7 +75,8 @@ public class Duke {
                 }
                 else if(fileInputLine[0].equals("D")){
                     String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
-                    tSave =  new Task.Deadline(fileInputLineMore[3], fileInputLineMore[4]);
+                    //System.out.println(fileInputLineMore[5]);
+                    tSave =  new Task.Deadline(fileInputLineMore[3] + " ", " "+ fileInputLineMore[5]);
                     tSave.toString();
                     if(fileInputLineMore[1].equals("1")){
                         tSave.getItDone();
@@ -85,8 +86,8 @@ public class Duke {
                 }
                 else if(fileInputLine[0].equals("E")){
                     String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
-                    System.out.println(fileInputLineMore[5]);
-                    tSave =  new Task.Event(fileInputLineMore[3], fileInputLineMore[4]);
+                    //System.out.println(fileInputLineMore[4]);
+                    tSave =  new Task.Event(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
                     tSave.toString();
                     if(fileInputLineMore[1].equals("1")){
                         tSave.getItDone();
@@ -187,6 +188,7 @@ public class Duke {
                             third_param = temp.split("by", 2 )[0];
                             fourth_param = temp.split("by", 2)[1];
                             System.out.println(third_param);
+                            fourth_param.replaceAll(" ", "");
                             System.out.println(fourth_param);
                             fw.write(first_param + " | " + second_param + " | " + third_param + "|" + fourth_param + "\r\n");
                             fw.flush();
@@ -198,7 +200,7 @@ public class Duke {
                             fourth_param = temp.split("at ", 2)[1];
                             System.out.println(third_param);
                             System.out.println(fourth_param);
-                            fw.write(first_param + " | " + second_param + " | " + third_param + "|" + fourth_param + "\r\n");
+                            fw.write(first_param + " | " + second_param + " | " + third_param + "| " + fourth_param + "\r\n");
                             fw.flush();
                         }
                     }
