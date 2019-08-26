@@ -42,61 +42,66 @@ class Duke {
         printPartition();
     }
 
-    public static void main(String[] args) throws DukeException, IOException {
+    public static void main(String[] args) throws DukeException, ArrayIndexOutOfBoundsException, IOException {
         Duke d = new Duke();
         ArrayList<Task> taskList = new ArrayList<Task>();
         String input;
-
-        String filepath = "C:\\test.txt";
-        File file = new File(filepath);
-        FileReader fr = new FileReader(file);
-        BufferedReader reader;
+        BufferedReader reader = null;
+        FileReader fr = null;
+        File file = null;
         Scanner s = new Scanner(System.in);
 
+        String filepath = "C:\\duke.txt";
+        try {
+            file = new File(filepath);
+            fr = new FileReader(file);
+        }
+        catch(FileNotFoundException e){
+            throw new DukeException("File that is trying to be read does not exist! >:( ");
+        }
         /*Read file here and insert task objects into taskList first*/
-        try{
-            reader = new BufferedReader(fr);
-            String line = reader.readLine();
-            while(line != null){
-                Task tSave = new Task(null);
-                //System.out.println(line);
-                String[] fileInputLine = line.split(" | ", 2);
-                if(fileInputLine[0].equals("T")) {
-                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 4);
-                    tSave =  new Todo(fileInputLineMore[3]);
-                    if(fileInputLineMore[1].equals("1")){
-                        tSave.getItDone();
-                    }
-                    taskList.add(tSave);
-                }
-                else if(fileInputLine[0].equals("D")){
-                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
-                    //System.out.println(fileInputLineMore[5]);
-                    tSave =  new Deadline(fileInputLineMore[3] + " ", " "+ fileInputLineMore[5]);
-                    tSave.toString();
-                    if(fileInputLineMore[1].equals("1")){
-                        tSave.getItDone();
-                    }
-                    taskList.add(tSave);
+        finally {
+            try {
+                reader = new BufferedReader(fr);
+                String line = reader.readLine();
+                while (line != null) {
+                    Task tSave = new Task(null);
+                    //System.out.println(line);
+                    String[] fileInputLine = line.split(" | ", 2);
+                    if (fileInputLine[0].equals("T")) {
+                        String[] fileInputLineMore = fileInputLine[1].split(" | ", 4);
+                        tSave = new Todo(fileInputLineMore[3]);
+                        if (fileInputLineMore[1].equals("1")) {
+                            tSave.getItDone();
+                        }
+                        taskList.add(tSave);
+                    } else if (fileInputLine[0].equals("D")) {
+                        String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
+                        //System.out.println(fileInputLineMore[5]);
+                        tSave = new Deadline(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
+                        tSave.toString();
+                        if (fileInputLineMore[1].equals("1")) {
+                            tSave.getItDone();
+                        }
+                        taskList.add(tSave);
 
-                }
-                else if(fileInputLine[0].equals("E")){
-                    String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
-                    //System.out.println(fileInputLineMore[4]);
-                    tSave =  new Event(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
-                    tSave.toString();
-                    if(fileInputLineMore[1].equals("1")){
-                        tSave.getItDone();
-                    }
-                    taskList.add(tSave);
+                    } else if (fileInputLine[0].equals("E")) {
+                        String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
+                        //System.out.println(fileInputLineMore[4]);
+                        tSave = new Event(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
+                        tSave.toString();
+                        if (fileInputLineMore[1].equals("1")) {
+                            tSave.getItDone();
+                        }
+                        taskList.add(tSave);
 
+                    }
+                    line = reader.readLine();
                 }
-                line = reader.readLine();
+                reader.close();
+            } catch (FileNotFoundException e) {
+                throw new DukeException("File that is trying to be read does not exist! >:( ");
             }
-            reader.close();
-        }catch(FileNotFoundException e){
-            throw e;
-            //throw new DukeException("File that is trying to be read does not exist! >:( ");
         }
         /**************************************END OF FILE READ******************************************/
 
@@ -113,7 +118,7 @@ class Duke {
                     String[] token = input.split(" ", 2);
                     command = token[0];
                     after_command = token[1];
-                }catch(Exception e){
+                }catch(ArrayIndexOutOfBoundsException e){
                     e.printStackTrace();
                     throw new DukeException(" ☹ OOPS!!! The description of a " + input + " cannot be empty.");
                 }
