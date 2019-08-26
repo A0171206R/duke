@@ -1,13 +1,9 @@
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.String;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.BufferedReader;
 
-public class Duke {
+class Duke {
 
     public Duke(){
         String logo = " ____        _        \n"
@@ -29,7 +25,7 @@ public class Duke {
         printPartition();
         System.out.println("Bye. Hope to see you again soon!");
         printPartition();
-        System.exit(1);
+        System.exit(0);
     }
 
     public void debug(String[] temp){
@@ -51,7 +47,7 @@ public class Duke {
         ArrayList<Task> taskList = new ArrayList<Task>();
         String input;
 
-        String filepath = "C:\\duke.txt";
+        String filepath = "C:\\test.txt";
         File file = new File(filepath);
         FileReader fr = new FileReader(file);
         BufferedReader reader;
@@ -67,7 +63,7 @@ public class Duke {
                 String[] fileInputLine = line.split(" | ", 2);
                 if(fileInputLine[0].equals("T")) {
                     String[] fileInputLineMore = fileInputLine[1].split(" | ", 4);
-                    tSave =  new Task.Todo(fileInputLineMore[3]);
+                    tSave =  new Todo(fileInputLineMore[3]);
                     if(fileInputLineMore[1].equals("1")){
                         tSave.getItDone();
                     }
@@ -76,7 +72,7 @@ public class Duke {
                 else if(fileInputLine[0].equals("D")){
                     String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
                     //System.out.println(fileInputLineMore[5]);
-                    tSave =  new Task.Deadline(fileInputLineMore[3] + " ", " "+ fileInputLineMore[5]);
+                    tSave =  new Deadline(fileInputLineMore[3] + " ", " "+ fileInputLineMore[5]);
                     tSave.toString();
                     if(fileInputLineMore[1].equals("1")){
                         tSave.getItDone();
@@ -87,7 +83,7 @@ public class Duke {
                 else if(fileInputLine[0].equals("E")){
                     String[] fileInputLineMore = fileInputLine[1].split(" | ", 6);
                     //System.out.println(fileInputLineMore[4]);
-                    tSave =  new Task.Event(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
+                    tSave =  new Event(fileInputLineMore[3] + " ", " " + fileInputLineMore[5]);
                     tSave.toString();
                     if(fileInputLineMore[1].equals("1")){
                         tSave.getItDone();
@@ -98,7 +94,7 @@ public class Duke {
                 line = reader.readLine();
             }
             reader.close();
-        }catch(Exception e){
+        }catch(FileNotFoundException e){
             throw e;
             //throw new DukeException("File that is trying to be read does not exist! >:( ");
         }
@@ -118,6 +114,7 @@ public class Duke {
                     command = token[0];
                     after_command = token[1];
                 }catch(Exception e){
+                    e.printStackTrace();
                     throw new DukeException(" ☹ OOPS!!! The description of a " + input + " cannot be empty.");
                 }
             }
@@ -132,7 +129,7 @@ public class Duke {
                     break;
                 case "todo":
                     description = after_command;
-                    t = new Task.Todo(description);
+                    t = new Todo(description);
                     taskList.add(t);
                     printPartition();
                     System.out.println("Got it. I've added this task:");
@@ -144,7 +141,7 @@ public class Duke {
                     split_more = after_command.split("/by", 2);
                     description = split_more[0];
                     by = split_more[1];
-                    t = new Task.Deadline(description, by);
+                    t = new Deadline(description, by);
                     taskList.add(t);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(t.toString());
@@ -155,7 +152,7 @@ public class Duke {
                     split_more = after_command.split("/at", 2);
                     description = split_more[0];
                     at = split_more[1];
-                    t = new Task.Event(description, at);
+                    t = new Event(description, at);
 
                     taskList.add(t);
                     System.out.println("Got it. I've added this task:");
@@ -202,80 +199,8 @@ public class Duke {
                     }
                     d.functionBye();
                 default:
-                    throw new DukeException("☹ OOPS!!! I'm sorry, but I don't know what that means :-(");
+
             }
         }
-    }
-}
-
-class Task{
-
-    protected String description;
-    protected boolean isDone;
-    protected char tag;
-
-    public Task(String description){
-        this.description = description;
-        this.isDone = false;
-    }
-
-    public void getItDone(){
-        isDone = true;
-    }
-    public String getStatusIcon(){
-        return (isDone ? "\u2713" : "\u2718");
-    }
-    public char getTag(){return tag;}
-
-    public static class Event extends Task {
-
-        protected String at;
-
-        public Event(String description, String at) {
-            super(description);
-            this.at = at;
-            super.tag = 'E';
-        }
-
-        @Override
-        public String toString() {
-            super.description = super.description + "(at:" + at + ")";
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
-        }
-    }
-
-    public static class Deadline extends Task {
-
-        protected String by;
-
-        public Deadline(String description, String by) {
-            super(description);
-            this.by = by;
-            super.tag = 'D';
-        }
-
-        @Override
-        public String toString() {
-            super.description = super.description + "(by:" + by + ")";
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
-        }
-    }
-    public static class Todo extends Task {
-
-        public Todo(String description) {
-            super(description);
-            super.tag = 'T';
-        }
-
-        @Override
-        public String toString() {
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
-        }
-    }
-}
-
-class DukeException extends Exception{
-    public DukeException(String errorMessage){
-        super(errorMessage);
     }
 }
