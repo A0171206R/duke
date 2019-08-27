@@ -67,7 +67,7 @@ public class Duke {
                     break;
                 case "todo":
                     description = after_command;
-                    t = new Task.Todo(description);
+                    t = new Todo(description);
                     taskList.add(t);
                     printPartition();
                     System.out.println("Got it. I've added this task:");
@@ -79,7 +79,7 @@ public class Duke {
                     split_more = after_command.split("/by", 2);
                     description = split_more[0];
                     by = split_more[1];
-                    t = new Task.Deadline(description, by);
+                    t = new Deadline(description, by);
                     taskList.add(t);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(t.toString());
@@ -90,7 +90,7 @@ public class Duke {
                     split_more = after_command.split("/at", 2);
                     description = split_more[0];
                     at = split_more[1];
-                    t = new Task.Event(description, at);
+                    t = new Event(description, at);
 
                     taskList.add(t);
                     System.out.println("Got it. I've added this task:");
@@ -111,72 +111,6 @@ public class Duke {
                     break;
             }
 
-        }
-    }
-}
-
-class Task{
-
-    protected String description;
-    protected boolean isDone;
-    protected char tag;
-
-    public Task(String description){
-        this.description = description;
-        this.isDone = false;
-    }
-
-    public void getItDone(){
-        isDone = true;
-    }
-    public String getStatusIcon(){
-        return (isDone ? "\u2713" : "\u2718");
-    }
-    public char getTag(){return tag;}
-
-    public static class Event extends Task {
-
-        protected String at;
-
-        public Event(String description, String at) {
-            super(description);
-            this.at = at;
-            super.tag = 'E';
-        }
-
-        @Override
-        public String toString() {
-            super.description = super.description + " (at: " + at + ")";
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
-        }
-    }
-
-    public static class Deadline extends Task {
-
-        protected String by;
-
-        public Deadline(String description, String by) {
-            super(description);
-            this.by = by;
-            super.tag = 'D';
-        }
-
-        @Override
-        public String toString() {
-            super.description = super.description + " (by: " + by + ")";
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
-        }
-    }
-    public static class Todo extends Task {
-
-        public Todo(String description) {
-            super(description);
-            super.tag = 'T';
-        }
-
-        @Override
-        public String toString() {
-            return  "[" + super.tag + "]" + "[" + super.getStatusIcon() + "] "+ super.description;
         }
     }
 }
