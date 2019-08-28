@@ -109,7 +109,7 @@ class Duke {
 
             input = s.nextLine();
             try {
-                if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0) {
+                if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0 || input.indexOf("delete") == 0) {
                     String[] token = input.split(" ", 2);
                     command = token[0];
                     after_command = token[1];
@@ -176,10 +176,16 @@ class Duke {
                 case "done":
                     taskList.get(Integer.parseInt(after_command) - 1).getItDone();
                     printPartition();
-                    System.out.println("Nice! I've marked this task as done:\n");
+                    System.out.println("Nice! I've marked this task as done:");
                     System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
                     printPartition();
                     break;
+                case "delete":
+                    printPartition();
+                    System.out.println("Noted. I've removed this task: ");
+                    System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
+                    printPartition();
+                    taskList.remove(Integer.parseInt(after_command) -1 );
                 case "":
                     //handles the commands without arguments
                     break;
