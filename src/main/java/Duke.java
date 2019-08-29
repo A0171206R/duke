@@ -109,7 +109,7 @@ class Duke {
 
             input = s.nextLine();
             try {
-                if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0 || input.indexOf("delete") == 0) {
+                if (input.indexOf("todo") == 0 || input.indexOf("deadline") == 0 || input.indexOf("event") == 0 || input.indexOf("done") == 0 || input.indexOf("delete") == 0 || input.indexOf("find") == 0) {
                     String[] token = input.split(" ", 2);
                     command = token[0];
                     after_command = token[1];
@@ -186,6 +186,7 @@ class Duke {
                     System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
                     printPartition();
                     taskList.remove(Integer.parseInt(after_command) -1 );
+                    break;
                 case "":
                     //handles the commands without arguments
                     break;
@@ -219,6 +220,7 @@ class Duke {
                         }
                     }
                     d.functionBye();
+                    break;
                 default:
                     printPartition();
                     DukeException.commandNotValid();
