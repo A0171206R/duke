@@ -186,6 +186,7 @@ class Duke {
                     System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
                     printPartition();
                     taskList.remove(Integer.parseInt(after_command) -1 );
+                    break;
                 case "":
                     //handles the commands without arguments
                     break;
