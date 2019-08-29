@@ -183,9 +183,21 @@ class Duke {
                 case "delete":
                     printPartition();
                     System.out.println("Noted. I've removed this task: ");
-                    System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
+                    System.out.println("[" + taskList.get(Integer.parseInt(after_command) - 1).getTag() + "]" + "[" + taskList.get(Integer.parseInt(after_command) - 1).getStatusIcon() + "] " + taskList.get(Integer.parseInt(after_command) - 1).description);
                     printPartition();
                     taskList.remove(Integer.parseInt(after_command) -1 );
+                    break;
+                case "find":
+                    int x = 1;
+                    printPartition();
+                    System.out.println("here are the matching tasks in your list:");
+                    for(int j = 0; j < taskList.size(); j++){
+                        if(taskList.get(j).description.contains(after_command) ){
+                            System.out.println(x + ".[" + taskList.get(j).getTag() + "]" + "[" + taskList.get(j).getStatusIcon() + "] " + taskList.get(j).description);
+                            x++;
+                        }
+                    }
+                    printPartition();
                     break;
                 case "":
                     //handles the commands without arguments
