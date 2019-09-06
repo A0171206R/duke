@@ -2,8 +2,12 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.String;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
-class Duke {
+class Duke{
 
     public Duke() {
         String logo = " ____        _        \n"
@@ -16,6 +20,16 @@ class Duke {
         System.out.println("Hello! I'm Duke\nWhat can I do for you?\n");
         System.out.println("____________________________________________________________\n");
     }
+
+   /* @Override
+    public void start(Stage stage) throws Exception {
+        Label helloWorld = new Label("Hello World!"); // Creating a new Label control
+        Scene scene = new Scene(helloWorld); // Setting the scene to be our Label
+
+        stage.setScene(scene); // Setting the stage to show our screen
+        stage.show(); // Render the stage.
+    }*/
+
 
     static void printPartition() {
         System.out.println("____________________________________________________________");
@@ -214,9 +228,9 @@ class Duke {
                             fw.write(first_param + " | " + second_param + " | " + taskList.get(i).description + "\r\n");
                             fw.flush();
                         } else if (first_param == 'D') {
-                            System.out.println(taskList.get(i).description);
+                            //System.out.println(taskList.get(i).description);
                             temp = taskList.get(i).description.replaceAll("\\(", "").replaceAll("\\)", "");
-                            System.out.println("After: " + temp);
+                            //System.out.println("After: " + temp);
                             third_param = temp.split("by:", 2)[0];
                             fourth_param = temp.split("by:", 2)[1];
 
