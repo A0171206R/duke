@@ -2,11 +2,20 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class Event extends Task {
+
+/**
+ * handles Event objects
+ */
+public class Event extends Task {
 
     protected String at, temp;
     protected Date dateInput;
 
+    /**
+     * Takes in the String description of the Deadline Task and the String at which is the time or the date
+     * @param description The description of the task
+     * @param at The time / date
+     */
     public Event(String description, String at) {
         super(description);
         this.at = at;

@@ -1,4 +1,8 @@
-class Task{
+/**
+ * Super class of specific tasks like Todo, Deadline and Event
+ */
+
+public class Task{
 
     protected String description;
     protected boolean isDone;

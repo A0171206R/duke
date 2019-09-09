@@ -2,12 +2,11 @@ import java.io.*;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.lang.String;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.stage.Stage;
 
-class Duke{
+/**
+ * Main class for duke
+ */
+public class Duke{
 
     public Duke() {
         String logo = " ____        _        \n"
@@ -21,20 +20,17 @@ class Duke{
         System.out.println("____________________________________________________________\n");
     }
 
-   /* @Override
-    public void start(Stage stage) throws Exception {
-        Label helloWorld = new Label("Hello World!"); // Creating a new Label control
-        Scene scene = new Scene(helloWorld); // Setting the scene to be our Label
 
-        stage.setScene(scene); // Setting the stage to show our screen
-        stage.show(); // Render the stage.
-    }*/
-
-
+    /**
+     * Prints the lines for partitioning IO
+     */
     static void printPartition() {
         System.out.println("____________________________________________________________");
     }
 
+    /**
+     * Terminates the program and saves the state
+     */
     public void functionBye() {
         printPartition();
         System.out.println("Bye. Hope to see you again soon!");
@@ -48,6 +44,10 @@ class Duke{
         }
     }
 
+    /**
+     * Prints the contents of the list of Task Objects
+     * @param taskList An ArrayList that takes in Task Objects
+     */
     static void printTaskList(ArrayList<Task> taskList) {
         printPartition();
         for (int i = 0; i < taskList.size(); i++) {
